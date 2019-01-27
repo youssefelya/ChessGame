@@ -1,7 +1,9 @@
 package com.chess.engine;
 import com.chess.engine.board.Move;
+
+import java.util.Collection;
+
 import com.chess.engine.board.Board;
-import java.util.ArrayList;
 
 public abstract class Pice {
 	protected final int picePosition; 
@@ -12,7 +14,11 @@ public abstract class Pice {
 		this. piceAllines=alline;
      	}
 	
-	public abstract ArrayList<Move> calculateLegalMove(final Board board);
+	public Alline getPiceAlline() {
+		return this.piceAllines;
+	}
+	
+	public abstract Collection<Move> calculateLegalMove(final Board board);
 	
 	
 	
