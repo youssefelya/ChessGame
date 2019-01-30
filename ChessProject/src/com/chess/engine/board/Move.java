@@ -15,7 +15,7 @@ public abstract class Move {
 	
 	public static final class MajorMove extends Move{
 
-		public MajorMove(Board board, Pice picemove, int d) {
+		public MajorMove(final Board board,final Pice picemove,final int d) {
 			super(board, picemove, d);
 			 
 		}
@@ -26,7 +26,7 @@ public abstract class Move {
 	
 	public static final class AttackMove extends Move{
 		 final Pice AttackPice;   
-		public AttackMove(Board board, Pice picemove, int d,
+		public AttackMove(final Board board,final Pice picemove,final int d,
 				final Pice attackpice) {
 			super(board, picemove, d);
 			this.AttackPice=attackpice;
