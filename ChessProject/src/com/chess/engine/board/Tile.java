@@ -77,6 +77,12 @@ public abstract class Tile {
 	}
 	 
  }
+
+
+
+
+
+ 
 	
 
 }

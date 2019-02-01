@@ -16,7 +16,7 @@ public class Knight extends Pice{
 			-6,6,16,15,17};
 	
 
-	Knight(int picePosition, Alline alline) {
+	public Knight(Alline alline, int picePosition) {
 		super(picePosition, alline);
 	 
 	}

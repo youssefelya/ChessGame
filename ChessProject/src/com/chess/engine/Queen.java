@@ -1,6 +1,5 @@
 package com.chess.engine;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,16 +9,15 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 
-public class Bishop extends Pice{
-	private final static int[] Canididat_Move_vector_Cordinate= {-9,-7,7,9};
-	
+public class Queen extends Pice {
+	private final static int[] Canididat_Move_vector_Cordinate= {-9,-8,-7,-1,1,7,8,9};
 
-	public Bishop(Alline alline, int picePosition) {
+
+	public Queen(Alline alline, int picePosition) {
 		super(picePosition, alline);
-	
+	 
 	}
 
-	@Override
 	public Collection<Move> calculateLegalMove(final Board board) {
 		ArrayList<Move> legalMoves=new ArrayList<>();
 		for(final int CandidateCordinateOffset:Canididat_Move_vector_Cordinate) {
@@ -50,16 +48,16 @@ public class Bishop extends Pice{
 	}
 	private static boolean isFirstColumExclusion(final int currentPosition,final int CandidateOffset) {
 		return BoardUtils.First_Culmn[currentPosition]&&(CandidateOffset==-9
-				                           ||CandidateOffset==7); }
+				                           ||CandidateOffset==7
+				                           ||CandidateOffset==-1); }
 	
 	private static boolean isEightColumExclusion(final int currentPosition,final int CandidateOffset) {
 		return BoardUtils.EIGHT_COLUMN[currentPosition]&&(CandidateOffset==-7
-				                           ||CandidateOffset==9); }
+				                           ||CandidateOffset==9
+				                           ||CandidateOffset==1 ); }
 	
 	
-	
-	
-	
+	   
 	
 	
 
