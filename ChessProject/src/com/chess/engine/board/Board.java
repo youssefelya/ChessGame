@@ -3,13 +3,18 @@ package com.chess.engine.board;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import com.chess.engine.*;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 public class Board {
 	
-private final ArrayList<Tile> gamBoard;
+private final  List<Tile> gamBoard;
 	private final Collection<Pice> whitePices;
 	private final Collection<Pice>  blackPices;
 	
@@ -19,9 +24,24 @@ private final ArrayList<Tile> gamBoard;
 		this.gamBoard=CreatGameBoard(builder);
 		this.whitePices=calcumlateActivePices(this.gamBoard,Alline.White);
 		this.blackPices=calcumlateActivePices(this.gamBoard,Alline.Black);
+		final Collection<Move> whiteStanderLegalMoves=calculateLegalMoves(this.whitePices) ;
+		final Collection<Move> blackStanderLegalMoves=calculateLegalMoves(this.blackPices);
+		
+		
+		
 	}
 
-	private static Collection<Pice> calcumlateActivePices(final ArrayList<Tile> gamBoard2,final Alline alline) {
+	private Collection<Move> calculateLegalMoves(final Collection<Pice> pieces) {
+		final  List<Move> legalMoves=new ArrayList<>();
+		for(final Pice piece:pieces) {
+		legalMoves.addAll(piece.calculateLegalMove(this));
+		}
+		
+		
+		return ImmutableList.copyOf(legalMoves);
+	}
+
+	private static Collection<Pice> calcumlateActivePices(final  List<Tile> gamBoard2,final Alline alline) {
 		final ArrayList<Pice> activepices=new ArrayList<>();
 		for(final Tile tile:gamBoard2) {
 			if(tile.isOccupied()) { 
@@ -35,13 +55,13 @@ private final ArrayList<Tile> gamBoard;
 		return activepices;
 	}
 
-	private ArrayList<Tile> CreatGameBoard(Builder builder) {
+	private List<Tile> CreatGameBoard(Builder builder) {
 		final Tile[] tiles=new Tile[BoardUtils.num_Tile];
 		for(int i=0;i<BoardUtils.num_Tile;i++) {
 			tiles[i]=Tile.creatTil(i, builder.boardConfig.get(i));
 		}
 		
-		return  (ArrayList<Tile>) tiles;
+		return  ImmutableList.copyOf(tiles); 
 
 	}
 
@@ -114,7 +134,7 @@ private final ArrayList<Tile> gamBoard;
 		 }
 		
 		public Builder setMoveMaker(final Alline nextMoveMaker) {
-			this.nextMoveMaker=nextMoveMaker;
+			this.nextMove=nextMoveMaker;
 			return this;
 		} 
 		 
