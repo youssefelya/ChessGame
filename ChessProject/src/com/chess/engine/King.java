@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.chess.engine.Pice.PieceType;
 import com.chess.engine.board.*;
+import com.google.common.collect.ImmutableList;
 
 
 public class King extends Pice{
@@ -13,6 +15,13 @@ private final int[] Candidat_Move_Coordinate= {-9,-8,-7,-1,1,7,8,9};
 		super(picePosition, alline);
 	 
 	}
+	
+	@Override
+	public String toString() {
+		return  PieceType.KING.toString();
+	}
+	
+	
 
 	@Override
 	public Collection<Move> calculateLegalMove(Board board) {
@@ -51,7 +60,7 @@ private final int[] Candidat_Move_Coordinate= {-9,-8,-7,-1,1,7,8,9};
 		
 		
 		
-		return  (ArrayList<Move>) Collections.unmodifiableList(legalsMoves);
+		return   ImmutableList.copyOf(legalsMoves);
 	}
 
 	

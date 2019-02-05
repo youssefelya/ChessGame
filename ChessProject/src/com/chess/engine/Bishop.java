@@ -9,6 +9,7 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
+import com.google.common.collect.ImmutableList;
 
 public class Bishop extends Pice{
 	private final static int[] Canididat_Move_vector_Cordinate= {-9,-7,7,9};
@@ -46,8 +47,15 @@ public class Bishop extends Pice{
 						       } 		}    	}
 		
 		 
-		return  (ArrayList<Move>) Collections.unmodifiableList(legalMoves);
+		return   ImmutableList.copyOf(legalMoves);
 	}
+	
+	@Override
+	public String toString() {
+		return  PieceType.BISHOP.toString();
+	}
+	
+	
 	private static boolean isFirstColumExclusion(final int currentPosition,final int CandidateOffset) {
 		return BoardUtils.First_Culmn[currentPosition]&&(CandidateOffset==-9
 				                           ||CandidateOffset==7); }

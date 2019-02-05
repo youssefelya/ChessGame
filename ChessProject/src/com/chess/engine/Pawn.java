@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.chess.engine.Pice.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 
 public class Pawn extends Pice {
  private final static int[] Candidate_Move_Coordinate= {8,16,7,9 };
@@ -15,6 +18,13 @@ private int candidateDestinationCordinate;
 	public Pawn(final Alline alline,final int picePosition) {
 		super(picePosition, alline);
 		// TODO Auto-generated constructor stub
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return  PieceType.PAWN.toString();
 	}
 
 	@Override
@@ -72,7 +82,7 @@ private int candidateDestinationCordinate;
 		
 	}
 		
-		return  (ArrayList<Move>) Collections.unmodifiableList(legalMoves);
+		return   ImmutableList.copyOf(legalMoves);
 	}
 
  

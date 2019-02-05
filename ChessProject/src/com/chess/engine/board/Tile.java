@@ -50,6 +50,12 @@ public abstract class Tile {
 		public  boolean isOccupied() {return false;
 		//Place is with coordinate XX is NOT OCCUPIED
 		}
+		
+		@Override
+		public String toString() {
+			return "-";
+		}
+		
 		public  Pice getPice() {return null; };
 	}
 
@@ -70,6 +76,13 @@ public abstract class Tile {
 		return true;
 		//this time it's occupied !! 
 	}
+	
+	@Override
+	public String toString() {
+		return  getPice().getPiceAlline().isBlack() ? getPice().toString().toLowerCase():
+			getPice().toString();
+	}
+	
 	@Override
 	public Pice getPice() { 
 		return this.picetile;

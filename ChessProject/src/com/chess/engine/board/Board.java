@@ -3,6 +3,7 @@ package com.chess.engine.board;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +31,24 @@ private final  List<Tile> gamBoard;
 		
 		
 	}
+	@Override
+	public String toString() {
+		final StringBuilder builder=new StringBuilder(); 
+		for(int i=0;i<BoardUtils.num_Tile;i++) {
+			final String tileText=this.gamBoard.get(i).toString();
+			builder.append(String.format("%3s", tileText));
+			if((i+1)%BoardUtils.num_Tile_Row==0) {
+				builder.append("\n");
+			}
+		}
+		return builder.toString();
+		
+	}
+	
+	
 
-	private Collection<Move> calculateLegalMoves(final Collection<Pice> pieces) {
+	 
+	private  Collection<Move> calculateLegalMoves(final Collection<Pice> pieces) {
 		final  List<Move> legalMoves=new ArrayList<>();
 		for(final Pice piece:pieces) {
 		legalMoves.addAll(piece.calculateLegalMove(this));
@@ -41,6 +58,9 @@ private final  List<Tile> gamBoard;
 		return ImmutableList.copyOf(legalMoves);
 	}
 
+	
+	
+	
 	private static Collection<Pice> calcumlateActivePices(final  List<Tile> gamBoard2,final Alline alline) {
 		final ArrayList<Pice> activepices=new ArrayList<>();
 		for(final Tile tile:gamBoard2) {
@@ -125,6 +145,7 @@ private final  List<Tile> gamBoard;
 		Map<Integer,Pice> boardConfig;
 		 Alline nextMove;
 		 public Builder() {
+			 this.boardConfig=new HashMap<>();
 			 
 		 }
 		 

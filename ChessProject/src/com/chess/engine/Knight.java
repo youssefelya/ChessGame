@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.chess.engine.Pice.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
+import com.google.common.collect.ImmutableList;
 
 public class Knight extends Pice{
 	
@@ -19,6 +21,15 @@ public class Knight extends Pice{
 	public Knight(Alline alline, int picePosition) {
 		super(picePosition, alline);
 	 
+	}
+	
+	
+	
+	
+	
+	@Override
+	public String toString() {
+		return  PieceType.KNIGHT.toString();
 	}
 
  
@@ -51,7 +62,7 @@ public class Knight extends Pice{
 			}
 		}
 		 
-		return (ArrayList<Move>) Collections.unmodifiableList(legalMove);
+		return  ImmutableList.copyOf(legalMove);
 	}
 	
 	

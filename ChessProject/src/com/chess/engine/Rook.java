@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.chess.engine.Pice.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
+import com.google.common.collect.ImmutableList;
 
 public class Rook extends Pice{
 	private final static int[] Canididat_Move_vector_Cordinate= {-8,-1,1,8};
@@ -17,6 +19,12 @@ public class Rook extends Pice{
 	public Rook( Alline alline,int picePosition) {
 		super(picePosition, alline);
 		 
+	}
+	
+	
+	@Override
+	public String toString() {
+		return  PieceType.ROOK.toString();
 	}
 
 	public Collection<Move> calculateLegalMove(final Board board) {
@@ -45,7 +53,7 @@ public class Rook extends Pice{
 						       } 		}    	}
 		
 		 
-		return  (ArrayList<Move>) Collections.unmodifiableList(legalMoves);
+		return   ImmutableList.copyOf(legalMoves);
 	}
 	private static boolean isFirstColumExclusion(final int currentPosition,final int CandidateOffset) {
 		return BoardUtils.First_Culmn[currentPosition]&&(CandidateOffset==-1
