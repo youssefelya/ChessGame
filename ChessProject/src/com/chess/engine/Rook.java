@@ -4,22 +4,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.chess.engine.Pice.PieceType;
+import com.chess.engine.Piece.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
-public class Rook extends Pice{
+public class Rook extends Piece{
 	private final static int[] Canididat_Move_vector_Cordinate= {-8,-1,1,8};
 
 	
 
-	public Rook( Alline alline,int picePosition) {
-		super(picePosition, alline);
+	public Rook( Alliance alline,int picePosition) {
+		super(PieceType.ROOK, picePosition, alline);
 		 
 	}
+	public Rook movePiece(Move move) { 
+		return new Rook(move.getMovePiece().getPiceAlline(),
+				move.getDestinationCoordinate());
+	}
+	
 	
 	
 	@Override
@@ -44,8 +49,8 @@ public class Rook extends Pice{
 						legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
 						
 					}else {
-						final Pice AtDestination= candidate.getPice();
-						final Alline piceAlline= AtDestination.getPiceAlline();
+						final Piece AtDestination= candidate.getPice();
+						final Alliance piceAlline= AtDestination.getPiceAlline();
 						if(this.piceAllines!=piceAlline) {
 							legalMoves.add(new Move.AttackMove(board,this,candidateDestinationCordinate,AtDestination));
 						}

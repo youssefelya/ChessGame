@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.chess.engine.Pice;
+import com.chess.engine.Piece;
 
 public abstract class Tile {
 	//This class is abstract becease we would like to know
@@ -14,7 +14,7 @@ public abstract class Tile {
 	
 
 	
-	public static Tile creatTil(final int coordinate,final Pice pice) {
+	public static Tile creatTil(final int coordinate,final Piece pice) {
 		return pice!=null?new OccupiedTile(coordinate, pice):empty_tile_cache.get(coordinate);
 	}
 	
@@ -34,7 +34,7 @@ public abstract class Tile {
 	}
 
 	public abstract boolean isOccupied();
-	 public abstract Pice getPice();
+	 public abstract Piece getPice();
 	 
 	 
 	 
@@ -56,7 +56,7 @@ public abstract class Tile {
 			return "-";
 		}
 		
-		public  Pice getPice() {return null; };
+		public  Piece getPice() {return null; };
 	}
 
 	
@@ -66,8 +66,8 @@ public abstract class Tile {
 	
 	
  public static final class OccupiedTile extends Tile{
-	  private final Pice picetile; 
-	 private OccupiedTile(int coordinate,Pice pice) {
+	  private final Piece picetile; 
+	 private OccupiedTile(int coordinate,Piece pice) {
 		 super(coordinate); 
 		 this.picetile=pice;
 	 }
@@ -84,7 +84,7 @@ public abstract class Tile {
 	}
 	
 	@Override
-	public Pice getPice() { 
+	public Piece getPice() { 
 		return this.picetile;
 		//return pice, so we can know what pice in that place.
 	}

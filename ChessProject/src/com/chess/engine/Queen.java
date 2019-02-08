@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.chess.engine.Pice.PieceType;
+import com.chess.engine.Piece.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
-public class Queen extends Pice {
+public class Queen extends Piece {
 	private final static int[] Canididat_Move_vector_Cordinate= {-9,-8,-7,-1,1,7,8,9};
 
 
-	public Queen(Alline alline, int picePosition) {
-		super(picePosition, alline);
+	public Queen(Alliance alline, int picePosition) {
+		super(PieceType.QUEEN, picePosition, alline);
 	 
 	}
 	
@@ -44,8 +44,8 @@ public class Queen extends Pice {
 						legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
 						
 					}else {
-						final Pice AtDestination= candidate.getPice();
-						final Alline piceAlline= AtDestination.getPiceAlline();
+						final Piece AtDestination= candidate.getPice();
+						final Alliance piceAlline= AtDestination.getPiceAlline();
 						if(this.piceAllines!=piceAlline) {
 							legalMoves.add(new Move.AttackMove(board,this,candidateDestinationCordinate,AtDestination));
 						}
@@ -67,6 +67,11 @@ public class Queen extends Pice {
 	
 	
 	   
+	public Queen movePiece(Move move) {
+		 
+		return new Queen(move.getMovePiece().getPiceAlline(),
+				move.getDestinationCoordinate());
+	}
 	
 	
 

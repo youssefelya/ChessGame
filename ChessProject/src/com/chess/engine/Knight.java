@@ -5,21 +5,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.chess.engine.Pice.PieceType;
+import com.chess.engine.Piece.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
-public class Knight extends Pice{
+public class Knight extends Piece{
 	
 	private final static int[] CANDIDAT_MOVES_COORDINET= {-17,-15,-16,
 			-6,6,16,15,17};
 	
 
-	public Knight(Alline alline, int picePosition) {
-		super(picePosition, alline);
+	public Knight(Alliance alline, int picePosition) {
+		super(PieceType.KNIGHT, picePosition, alline);
 	 
 	}
 	
@@ -53,8 +53,8 @@ public class Knight extends Pice{
 				legalMove.add(new Move.MajorMove(board,this,candidatDistinationCoordinate));
 				
 			}else {
-				final Pice AtDestination= candidate.getPice();
-				final Alline piceAlline= AtDestination.getPiceAlline();
+				final Piece AtDestination= candidate.getPice();
+				final Alliance piceAlline= AtDestination.getPiceAlline();
 				if(this.piceAllines!=piceAlline) {
 					legalMove.add(new Move.AttackMove(board,this,candidatDistinationCoordinate,AtDestination));
 				}
@@ -98,12 +98,16 @@ public class Knight extends Pice{
 		return  BoardUtils.EIGHT_COLUMN[currentposition]&&
 				((candidateOffset==-15)||(candidateOffset==-6)	
 						||(candidateOffset==10)	
-						||(candidateOffset==-17));
-		
-		
+						||(candidateOffset==-17));	
 	}
 	
 	
+	
+	public Knight movePiece(Move move) {
+		 
+		return new Knight(move.getMovePiece().getPiceAlline(),
+				move.getDestinationCoordinate());
+	}
 	
 	
 	

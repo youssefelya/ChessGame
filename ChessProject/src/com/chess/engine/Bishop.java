@@ -4,19 +4,18 @@ import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
-public class Bishop extends Pice{
+public class Bishop extends Piece{
 	private final static int[] Canididat_Move_vector_Cordinate= {-9,-7,7,9};
 	
 
-	public Bishop(Alline alline, int picePosition) {
-		super(picePosition, alline);
+	public Bishop(Alliance alline, int picePosition) {
+		super(PieceType.BISHOP, picePosition, alline);
 	
 	}
 
@@ -38,8 +37,8 @@ public class Bishop extends Pice{
 						legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
 						
 					}else {
-						final Pice AtDestination= candidate.getPice();
-						final Alline piceAlline= AtDestination.getPiceAlline();
+						final Piece AtDestination= candidate.getPice();
+						final Alliance piceAlline= AtDestination.getPiceAlline();
 						if(this.piceAllines!=piceAlline) {
 							legalMoves.add(new Move.AttackMove(board,this,candidateDestinationCordinate,AtDestination));
 						}
@@ -63,6 +62,13 @@ public class Bishop extends Pice{
 	private static boolean isEightColumExclusion(final int currentPosition,final int CandidateOffset) {
 		return BoardUtils.EIGHT_COLUMN[currentPosition]&&(CandidateOffset==-7
 				                           ||CandidateOffset==9); }
+
+	@Override
+	public Piece movePiece(final Move move) {
+		 
+		return new Bishop(move.getMovePiece().getPiceAlline(),
+				move.getDestinationCoordinate());
+	}
 	
 	
 	

@@ -4,20 +4,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.chess.engine.Pice.PieceType;
+import com.chess.engine.Piece.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 
-public class Pawn extends Pice {
- private final static int[] Candidate_Move_Coordinate= {8,16,7,9 };
+public class Pawn extends Piece {
+ private final static int[] Candidate_Move_Coordinate= {8,16,7,9};
 private int candidateDestinationCordinate;
 
-	public Pawn(final Alline alline,final int picePosition) {
-		super(picePosition, alline);
+	public Pawn(final Alliance alline,final int picePosition) {
+		super(PieceType.PAWN, picePosition, alline);
 		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public Pawn movePiece(Move move) {
+		 
+		return new Pawn(move.getMovePiece().getPiceAlline(),
+				move.getDestinationCoordinate());
 	}
 	
 	
@@ -56,7 +63,7 @@ private int candidateDestinationCordinate;
 			||(BoardUtils.First_Culmn[this.picePosition]
 				&&this.piceAllines.isBlack()))) {
 			if(board.getTile(CandidateDestinitionCoordinate).isOccupied()) {
-			final Pice piceCandidate=board.getTile(CandidateDestinitionCoordinate).getPice() ;
+			final Piece piceCandidate=board.getTile(CandidateDestinitionCoordinate).getPice() ;
 			if(this.piceAllines!=piceCandidate.piceAllines){
 				//TO DOO he pot MajorMove#############
 				legalMoves.add(new Move.AttackMove(board, this, picePosition, piceCandidate));
@@ -69,7 +76,7 @@ private int candidateDestinationCordinate;
 			  this.piceAllines.isWhite()||(BoardUtils.EIGHT_COLUMN[this.picePosition]&&
 					  this.piceAllines.isBlack())){
 			if(board.getTile(CandidateDestinitionCoordinate).isOccupied()) {
-				final Pice piceCandidate=board.getTile(CandidateDestinitionCoordinate).getPice() ;
+				final Piece piceCandidate=board.getTile(CandidateDestinitionCoordinate).getPice() ;
 				if(this.piceAllines!=piceCandidate.piceAllines){
 					//TO DOO he pot MajorMove#############
 					legalMoves.add(new Move.AttackMove(board, this, picePosition, piceCandidate));

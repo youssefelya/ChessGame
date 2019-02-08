@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.chess.engine.Pice.PieceType;
+import com.chess.engine.Piece.PieceType;
 import com.chess.engine.board.*;
 import com.google.common.collect.ImmutableList;
 
 
-public class King extends Pice{
+public class King extends Piece{
 private final int[] Candidat_Move_Coordinate= {-9,-8,-7,-1,1,7,8,9};
-	public King(Alline alline, int picePosition) {
-		super(picePosition, alline);
+	public King(Alliance alline, int picePosition) {
+		super(PieceType.KING, picePosition, alline);
 	 
 	}
 	
@@ -44,8 +44,8 @@ private final int[] Candidat_Move_Coordinate= {-9,-8,-7,-1,1,7,8,9};
 					legalsMoves.add(new Move.MajorMove(board,this,CandidateDestinationCorrdinate));
 					
 				}else {
-					final Pice AtDestination= CandidateDestinationTile.getPice();
-					final Alline piceAlline= AtDestination.getPiceAlline();
+					final Piece AtDestination= CandidateDestinationTile.getPice();
+					final Alliance piceAlline= AtDestination.getPiceAlline();
 					if(this.piceAllines!=piceAlline) {
 						legalsMoves.add(new Move.AttackMove(board,this,CandidateDestinationCorrdinate,AtDestination));
 					}
@@ -79,9 +79,17 @@ private final int[] Candidat_Move_Coordinate= {-9,-8,-7,-1,1,7,8,9};
 		return  BoardUtils.SECONDE_Culmn[currentposition]&&
 				((candidateOffset==7)||(candidateOffset==1)	 
 						||(candidateOffset==9)	 );
-		
-		
 	}
+	
+	
+	public King movePiece(final Move move) {
+		 
+		return new King(move.getMovePiece().getPiceAlline(),
+				move.getDestinationCoordinate());
+	}
+	
+	
+	
 	
 	
 }
