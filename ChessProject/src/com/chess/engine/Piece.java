@@ -78,9 +78,15 @@ public abstract class Piece {
 	
 	
 	public enum PieceType{
-		PAWN("p") {
+		PAWN("P") {
 			@Override
 			public boolean isKing() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean isRook() {
 				// TODO Auto-generated method stub
 				return false;
 			}
@@ -91,10 +97,22 @@ public abstract class Piece {
 				// TODO Auto-generated method stub
 				return false;
 			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return false;
+			}
 		},
 		BISHOP("B") {
 			@Override
 			public boolean isKing() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean isRook() {
 				// TODO Auto-generated method stub
 				return false;
 			}
@@ -105,9 +123,21 @@ public abstract class Piece {
 				// TODO Auto-generated method stub
 				return false;
 			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return true;
+			}
 		}, QUEEN("Q") {
 			@Override
 			public boolean isKing() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean isRook() {
 				// TODO Auto-generated method stub
 				return false;
 			}
@@ -116,6 +146,12 @@ public abstract class Piece {
 			public boolean isKing() {
 				// TODO Auto-generated method stub
 				return true;
+			}
+
+			@Override
+			public boolean isRook() {
+				// TODO Auto-generated method stub
+				return false;
 			}
 		};
 		private String pieceName; 
@@ -128,6 +164,7 @@ public abstract class Piece {
 		}
 		
 		public abstract boolean isKing();
+		public abstract boolean isRook();
 		
 	}
 	

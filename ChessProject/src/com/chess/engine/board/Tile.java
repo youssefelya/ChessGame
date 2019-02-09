@@ -95,6 +95,17 @@ public abstract class Tile {
 
 
 
+
+
+public int getTileCoordinate() {
+	// TODO Auto-generated method stub
+	return  this.tileCoordinate;
+}
+
+
+
+
+
  
 	
 

@@ -38,19 +38,23 @@ private int candidateDestinationCordinate;
 	public Collection<Move> calculateLegalMove(final Board board) {
  final ArrayList<Move>legalMoves=new ArrayList<Move>(); 
 	for(final int currentCandidateOffset:Candidate_Move_Coordinate) {
-		final int CandidateDestinitionCoordinate=this.picePosition+this.piceAllines.getDirection()*currentCandidateOffset;
+final int CandidateDestinitionCoordinate=this.picePosition+
+this.piceAllines.getDirection()*currentCandidateOffset;
 		
-		if(!BoardUtils.isValideTileCoordinate(CandidateDestinitionCoordinate)) {
+	if(!BoardUtils.isValideTileCoordinate(CandidateDestinitionCoordinate)) {
 			continue;
 		}
-		if(currentCandidateOffset==8&&!board.getTile(CandidateDestinitionCoordinate).isOccupied()) {//##################
-			legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
-		}else if(currentCandidateOffset==16&&this.isFirstMove()&&
-				(BoardUtils.SECONDE_ROW[this.picePosition]
+		if(currentCandidateOffset==8&&
+!board.getTile(CandidateDestinitionCoordinate).isOccupied()) {//##################
+legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
+}else if(currentCandidateOffset==16&&this.isFirstMove()&&
+				(BoardUtils.SEVENTH_RANK[this.picePosition]
 						&&this.getPiceAlline().isBlack() )||
-				(BoardUtils.SEVENTH_ROW[this.picePosition]&&this.piceAllines.isWhite())){
+				(BoardUtils.SECOND_RANK[this.picePosition]&&
+						this.piceAllines.isWhite())){
+	
 			final int behindCandidateDEstinationCoordinate=this.picePosition+(this.piceAllines.getDirection()*8); 
-			if(!board.getTile(behindCandidateDEstinationCoordinate).isOccupied(
+		if(!board.getTile(behindCandidateDEstinationCoordinate).isOccupied(
 	)&& !board.getTile(candidateDestinationCordinate).isOccupied()
 				) {
 				legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCordinate));

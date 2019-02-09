@@ -13,6 +13,7 @@ import com.chess.engine.Piece.PieceType;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 public abstract class Player {
 
@@ -20,17 +21,25 @@ public abstract class Player {
  protected final King playerKing; 
  protected final Collection<Move> legalMove;
  private final boolean isInCheck;
+ 
+ 
+ 
+ protected abstract Collection<Move> calculateKingCateles(Collection<Move> playerLegals,
+		 Collection<Move> opponentLegals);
+ 
+ 
 public Player(Board board, 
 		Collection<Move> legalMove,
 		Collection<Move> oppementMoves ) {
 	this.board = board; 
 	this.playerKing = establishKing();
-	this.legalMove = legalMove;
+	this.legalMove =ImmutableList.copyOf(Iterables.concat(legalMove,
+			calculateKingCateles(legalMove, oppementMoves)));
 	this.isInCheck=!Player.calculateAttackOnTile(
 			this.playerKing.getPicePosition(),oppementMoves).isEmpty();
 	
              }
-private static Collection<Move> calculateAttackOnTile(int picePosition,
+protected static Collection<Move> calculateAttackOnTile(int picePosition,
 		Collection<Move>  Moves) {
 	final List<Move> attackeMoves=new ArrayList<>();
 	for(final Move move:Moves ) {

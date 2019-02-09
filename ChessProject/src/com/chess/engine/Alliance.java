@@ -5,7 +5,7 @@ import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 
 public enum Alliance {
-	White {
+	White{
 		@Override
 		public int getDirection() {
 			// TODO Auto-generated method stub

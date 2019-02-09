@@ -1,11 +1,12 @@
 package com.chess.engine.board;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.omg.CORBA.INTERNAL;
 
 import com.chess.engine.*;
 import com.chess.engine.player.BlackPlayer;
@@ -15,6 +16,7 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 
 public class Board {
 	
@@ -62,6 +64,8 @@ public class Board {
 	}
 	
 	
+	
+	
 
 	 
 	private  Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
@@ -75,6 +79,12 @@ public class Board {
 	}
 
 	
+	
+	public Iterable<Move> getAlllegalMoves() {
+		return Iterables.unmodifiableIterable( 
+				Iterables.concat(this.whitePlayer.getlegalMoves(),
+						this.blackePlayer.getlegalMoves()));
+	}
 	
 	
 	private static Collection<Piece> calcumlateActivePices(final  List<Tile> gamBoard2,final Alliance alline) {
@@ -174,6 +184,7 @@ public class Board {
 	public static class Builder{
 		Map<Integer,Piece> boardConfig;
 		 Alliance nextMoveMaker;
+		  Pawn enPassantPawn;
 		 public Builder() {
 			 this.boardConfig=new HashMap<>();
 			 
@@ -192,6 +203,11 @@ public class Board {
 		public Board build() {
 			return new Board(this);
 		}
+
+		public void setEnPassantPawn(Pawn enPassantPawn) {
+			this.enPassantPawn=enPassantPawn;
+			
+		}
 	}
 
 	public Player whitePlayer() {
@@ -202,6 +218,7 @@ public class Board {
 		// TODO Auto-generated method stub
 		return this.BlackPlayer();
 	}
+	
 	 
 	
 	
