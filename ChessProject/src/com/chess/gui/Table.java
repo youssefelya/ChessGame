@@ -1,5 +1,6 @@
 package com.chess.gui;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,10 +14,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -51,6 +55,9 @@ private Board chessBoard;
 private static String defaultPieceImagePath="chesspic\\";
 
 
+private boolean highlightLegalMove;
+
+
 
 private static final Dimension BOARD_PANEL_DIMENSION = 
                     new Dimension(400,400);
@@ -68,6 +75,7 @@ private final Color darkTileColor=Color.decode("#593E1A");
 		this.gameFrame.setLayout(new BorderLayout());
 
 		this.chessBoard=Board.creatStanderdBoard();
+		this.highlightLegalMove= false;
             
 		 this.boardDirection=BoardDirection.NORMAL;
 		
@@ -77,6 +85,9 @@ private final Color darkTileColor=Color.decode("#593E1A");
 		this.boardPanel=new BoardPanel();
 		this.gameFrame.add(this.boardPanel,
 				BorderLayout.CENTER); 
+		
+		
+		
 		
 		this.gameFrame.setVisible(true);
 		this.gameFrame.setDefaultCloseOperation(
@@ -105,16 +116,7 @@ private final Color darkTileColor=Color.decode("#593E1A");
 		fileMenu.add(openPGN);
 		final JMenuItem exitMenuItem=new JMenuItem("Exit");
 		
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		exitMenuItem.addActionListener(new ActionListener() {
 			
@@ -148,7 +150,7 @@ private final Color darkTileColor=Color.decode("#593E1A");
 
 		public void drawBoard(final Board board) {
 			 removeAll();
-			 for(final TilePanel tilePanel :boardDirection.traverse(boardTiles)) {
+	 for(final TilePanel tilePanel :boardDirection.traverse(boardTiles)) {
 				 tilePanel.drawTile(board);
 				 add(tilePanel);
 			 }
@@ -177,6 +179,21 @@ private final Color darkTileColor=Color.decode("#593E1A");
 			}
 		});
 		preferencesMenu.add(flipBoardMenuItem);
+		preferencesMenu.addSeparator();
+		final JCheckBoxMenuItem legalMoveHighlighterCheckbox=
+				new JCheckBoxMenuItem ("HighLight Legal Moves",false);
+		
+		legalMoveHighlighterCheckbox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			highlightLegalMove=legalMoveHighlighterCheckbox.isSelected();
+              
+				
+			}
+		});
+		
+		preferencesMenu.add(legalMoveHighlighterCheckbox);
 		return preferencesMenu;
 	}
 	
@@ -187,10 +204,64 @@ private final Color darkTileColor=Color.decode("#593E1A");
 			this.tileId=tileId;
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assighnTilecolor();
+			
+			highLightLegals(chessBoard);
+
 			assigneTilePieceIcon(chessBoard );
-			validate();
+
+			 
 			
 			addMouseListener(new MouseListener() {
+				
+				
+				@Override
+		public void mouseClicked(final MouseEvent e) {
+					System.out.println("Mouse Clique "+e);
+		 if(javax.swing.SwingUtilities.isRightMouseButton(e)) {
+			 System.out.println("Right Mause b" );
+			 sourceTile=null;
+			 destinationTile=null;
+			 humanMovePiece=null;		 
+			 }
+		 
+		 else if(javax.swing.SwingUtilities.isLeftMouseButton(e)) {
+			 System.out.println("Left mause click ");
+	if(sourceTile==null) {
+		sourceTile=chessBoard.getTile(tileId);
+		humanMovePiece=sourceTile.getPice();
+		if(humanMovePiece==null) { 
+			 sourceTile=null;
+		}else {
+			destinationTile=chessBoard.getTile(tileId);
+			final Move move= Move.MoveFactray.createMove(chessBoard, 
+					sourceTile.getTileCoordinate(),
+					destinationTile.getTileCoordinate());
+			final MoveTransition transition=
+					chessBoard.currentPlayer().makeMove(move);
+		if(transition.getMoveStatus().isDone()) {
+			chessBoard=transition.getTransitionBoard();
+			//add the move that was made to the move log
+		}
+		sourceTile=null;
+		destinationTile=null;
+		humanMovePiece=null;
+		
+	         	}
+		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+			boardPanel.drawBoard(chessBoard);
+				
+			}});
+		
+			   }
+		  	  }
+		
+					
+				}
+
 				
 				@Override
 				public void mouseReleased(final MouseEvent e) {
@@ -216,62 +287,10 @@ private final Color darkTileColor=Color.decode("#593E1A");
 					
 				}
 				
-				@Override
-		public void mouseClicked(final MouseEvent e) {
-		 if(isRightMauseButton(e)) {
-			 sourceTile=null;
-			 destinationTile=null;
-			 humanMovePiece=null;
-					 
-			 }
-		 else if(isLeftMauseButton(e)) {		 
-	if(sourceTile==null) {
-		sourceTile=chessBoard.getTile(tileId);
-		humanMovePiece=sourceTile.getPice();
-		if(humanMovePiece==null) { 
-			 sourceTile=null;
-		}else {
-			destinationTile=chessBoard.getTile(tileId);
-			final Move move= Move.MoveFactray.createMove(chessBoard, 
-					sourceTile.getTileCoordinate(),
-					destinationTile.getTileCoordinate());
-			final MoveTransition transition=
-					chessBoard.currentPlayer().makeMove(move);
-		if(transition.getMoveStatus().isDone()) {
-			chessBoard=transition.getBoard();
-			//add the move that was made to the move log
-		}
-		sourceTile=null;
-		destinationTile=null;
-		humanMovePiece=null;
-		
-	         	}
-		
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-			boardPanel.drawBoard(chessBoard);
-				
-			}});
-		
-			   }
-		  	  }
-		
-					
-				}
 
 				
 				
-private boolean isLeftMauseButton(final MouseEvent e) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-
-private boolean isRightMauseButton(MouseEvent e) {
-					// TODO Auto-generated method stub
-					return false;
-				}
+     
 			});
 			
 			
@@ -286,21 +305,15 @@ private boolean isRightMauseButton(MouseEvent e) {
 		}
 		private void assigneTilePieceIcon(final Board board) {
 			this.removeAll();
-			if(board.getTile(this.tileId).isOccupied()) {
-				
+			if(board.getTile(this.tileId).isOccupied()) {	
 				String s=(defaultPieceImagePath+board.
               getTile(this.tileId).
               getPice().getPiceAlline().toString().substring(0,1)+board.
          getTile(this.tileId).getPice().toString()+".png");
-				System.out.println(s);
-				
-				
+				//System.out.println(s);
 				 
 				try {
-					System.out.println("try "+board.
-              getTile(this.tileId).
-              getPice().getPiceAlline().toString().substring(0,1)+board.
-         getTile(this.tileId).getPice().toString()+".png");
+					
 			final BufferedImage image=ImageIO.read(
 					new 
              File( defaultPieceImagePath+board.
@@ -315,9 +328,38 @@ private boolean isRightMauseButton(MouseEvent e) {
 			}
 		}
 		
+		private void highLightLegals(final Board board) {
+			//if(highlightLegalMove) 
+			if(true){
+				System.out.println("HighLight Legals Moves !!!!");
+
+		for(final Move move:pieceLegalMoves(board)) {
+			if(move.getDestinationCoordinate()==this.tileId) {
+					try {
+						System.out.println("Inside tryyy ");
+
+	add(new JLabel(new ImageIcon(
+			ImageIO.read(new File("chesspic\\1.jpg") ) )));			
+					 		
+						}
+						catch(Exception e) {System.out.println(e);}
+					}
+				}
+		
+			}
+		}
 		
 		
 		
+		
+		
+		private Collection<Move> pieceLegalMoves(final Board board) {
+			if(humanMovePiece!=null&&humanMovePiece.getPiceAlline()==
+					board.currentPlayer().getAllience() ) {
+				return humanMovePiece.calculateLegalMove(board);
+			}
+			return Collections.emptyList();
+		}
 		
 		
 		private void assighnTilecolor() {
@@ -343,6 +385,9 @@ private boolean isRightMauseButton(MouseEvent e) {
 		
 		
 	}
+	
+
+	
 	
 	public enum BoardDirection{
 		NORMAL{

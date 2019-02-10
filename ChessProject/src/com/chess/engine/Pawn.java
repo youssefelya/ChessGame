@@ -45,15 +45,18 @@ this.piceAllines.getDirection()*currentCandidateOffset;
 			continue;
 		}
 		if(currentCandidateOffset==8&&
-!board.getTile(CandidateDestinitionCoordinate).isOccupied()) {//##################
+    !board.getTile(CandidateDestinitionCoordinate).isOccupied()) {
+			//##################
 legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
-}else if(currentCandidateOffset==16&&this.isFirstMove()&&
+}else 
+	if(currentCandidateOffset==16&&this.isFirstMove()&&
 				(BoardUtils.SEVENTH_RANK[this.picePosition]
 						&&this.getPiceAlline().isBlack() )||
 				(BoardUtils.SECOND_RANK[this.picePosition]&&
 						this.piceAllines.isWhite())){
 	
-			final int behindCandidateDEstinationCoordinate=this.picePosition+(this.piceAllines.getDirection()*8); 
+	final int behindCandidateDEstinationCoordinate=
+			this.picePosition+(this.piceAllines.getDirection()*8); 
 		if(!board.getTile(behindCandidateDEstinationCoordinate).isOccupied(
 	)&& !board.getTile(candidateDestinationCordinate).isOccupied()
 				) {
@@ -82,7 +85,7 @@ legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCordinate));
 			if(board.getTile(CandidateDestinitionCoordinate).isOccupied()) {
 				final Piece piceCandidate=board.getTile(CandidateDestinitionCoordinate).getPice() ;
 				if(this.piceAllines!=piceCandidate.piceAllines){
-					//TO DOO he pot MajorMove#############
+					//TO DOO he put MajorMove#############
 					legalMoves.add(new Move.AttackMove(board, this, picePosition, piceCandidate));
 				}
 				

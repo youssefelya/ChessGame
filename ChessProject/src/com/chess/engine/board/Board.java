@@ -150,7 +150,7 @@ public class Board {
 		builder.setPiece(new Pawn(Alliance.White,49));
 		builder.setPiece(new Pawn(Alliance.White,50));
 		builder.setPiece(new Pawn(Alliance.White,51));
-		builder.setPiece(new Pawn(Alliance.White,51));
+		builder.setPiece(new Pawn(Alliance.White,52));
 		builder.setPiece(new Pawn(Alliance.White,53));
 		builder.setPiece(new Pawn(Alliance.White,54));
 		builder.setPiece(new Pawn(Alliance.White,55));
