@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,23 +23,37 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import com.chess.engine.Piece;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Tile;
+import com.chess.engine.player.MoveTransition;
+import com.google.common.collect.Lists;
 
 public class Table {
 private final static Dimension  OUTER_FRAME_DIMENSION=
 new Dimension(600,600);
 
+private Tile sourceTile;
+private Tile destinationTile;
+private Piece humanMovePiece; 
+private BoardDirection boardDirection;
+
+
+
 
 private final BoardPanel boardPanel;
-private final Board chessBoard;
+private Board chessBoard;
 
 private static String defaultPieceImagePath="chesspic\\";
 
 
 
-private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,400);
+private static final Dimension BOARD_PANEL_DIMENSION = 
+                    new Dimension(400,400);
 private static final Dimension TILE_PANEL_DIMENSION =
            new Dimension(20,20);
 
@@ -52,6 +68,8 @@ private final Color darkTileColor=Color.decode("#593E1A");
 		this.gameFrame.setLayout(new BorderLayout());
 
 		this.chessBoard=Board.creatStanderdBoard();
+            
+		 this.boardDirection=BoardDirection.NORMAL;
 		
 		final JMenuBar tableMenuBar=createTableMenuBar();
 		this.gameFrame.setJMenuBar(tableMenuBar);
@@ -69,6 +87,7 @@ private final Color darkTileColor=Color.decode("#593E1A");
 	private JMenuBar createTableMenuBar() {
 		final JMenuBar tableMenuBar=new JMenuBar();
 		 tableMenuBar.add(creatFileMenu());
+		 tableMenuBar.add(createPreferencesMenu());
 		 return tableMenuBar;	
 	}
 	
@@ -85,6 +104,18 @@ private final Color darkTileColor=Color.decode("#593E1A");
 		});
 		fileMenu.add(openPGN);
 		final JMenuItem exitMenuItem=new JMenuItem("Exit");
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		exitMenuItem.addActionListener(new ActionListener() {
 			
 			@Override
@@ -114,11 +145,40 @@ private final Color darkTileColor=Color.decode("#593E1A");
 			setPreferredSize(BOARD_PANEL_DIMENSION);
 			validate();
 		}
+
+		public void drawBoard(final Board board) {
+			 removeAll();
+			 for(final TilePanel tilePanel :boardDirection.traverse(boardTiles)) {
+				 tilePanel.drawTile(board);
+				 add(tilePanel);
+			 }
+			 validate();
+			 repaint();
+			
+		}
 		
 	}
 	
 	
 	
+	
+	
+	private JMenu createPreferencesMenu() {
+		
+		final JMenu preferencesMenu=new JMenu("Preferences");
+		final JMenuItem flipBoardMenuItem=new JMenuItem("Flip Board");
+		flipBoardMenuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+			 boardDirection=boardDirection.oppisite();
+			 boardPanel.drawBoard(chessBoard);
+				
+			}
+		});
+		preferencesMenu.add(flipBoardMenuItem);
+		return preferencesMenu;
+	}
 	
 	private class TilePanel extends JPanel{ 
 		private final int tileId;
@@ -129,6 +189,99 @@ private final Color darkTileColor=Color.decode("#593E1A");
 			assighnTilecolor();
 			assigneTilePieceIcon(chessBoard );
 			validate();
+			
+			addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(final MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(final MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseExited(final MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+		public void mouseEntered(final MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+		public void mouseClicked(final MouseEvent e) {
+		 if(isRightMauseButton(e)) {
+			 sourceTile=null;
+			 destinationTile=null;
+			 humanMovePiece=null;
+					 
+			 }
+		 else if(isLeftMauseButton(e)) {		 
+	if(sourceTile==null) {
+		sourceTile=chessBoard.getTile(tileId);
+		humanMovePiece=sourceTile.getPice();
+		if(humanMovePiece==null) { 
+			 sourceTile=null;
+		}else {
+			destinationTile=chessBoard.getTile(tileId);
+			final Move move= Move.MoveFactray.createMove(chessBoard, 
+					sourceTile.getTileCoordinate(),
+					destinationTile.getTileCoordinate());
+			final MoveTransition transition=
+					chessBoard.currentPlayer().makeMove(move);
+		if(transition.getMoveStatus().isDone()) {
+			chessBoard=transition.getBoard();
+			//add the move that was made to the move log
+		}
+		sourceTile=null;
+		destinationTile=null;
+		humanMovePiece=null;
+		
+	         	}
+		
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+			boardPanel.drawBoard(chessBoard);
+				
+			}});
+		
+			   }
+		  	  }
+		
+					
+				}
+
+				
+				
+private boolean isLeftMauseButton(final MouseEvent e) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+
+private boolean isRightMauseButton(MouseEvent e) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+			});
+			
+			
+			
+		}
+		public void drawTile(final Board board) {
+			assighnTilecolor();
+			assigneTilePieceIcon(board);
+			validate();
+			repaint();
 			
 		}
 		private void assigneTilePieceIcon(final Board board) {
@@ -190,6 +343,34 @@ private final Color darkTileColor=Color.decode("#593E1A");
 		
 		
 	}
+	
+	public enum BoardDirection{
+		NORMAL{
+			@Override
+			List<TilePanel> traverse(final List<TilePanel> boardTiles){
+				return boardTiles;
+			}
+			@Override
+			  BoardDirection oppisite() {
+				return FLIPPED;
+			}
+		},
+		
+		FLIPPED{
+			@Override
+			List<TilePanel> traverse(final List<TilePanel> boardTiles){
+				return Lists.reverse(boardTiles);
+			}
+			@Override
+			  BoardDirection oppisite() {
+				return NORMAL;
+			}
+			
+		};
+		abstract List<TilePanel>  traverse(final List<TilePanel> boardTiles);
+		abstract BoardDirection oppisite(); 
+	}
+	
 	
 	
 	
