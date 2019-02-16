@@ -349,7 +349,7 @@ private final Color darkTileColor=Color.decode("#593E1A");
 			ImageIO.read(new File("chesspic\\1.jpg") ) )));			
 					 		
 						}
-						catch(Exception e) {System.out.println(e);}
+						catch(Exception arg) {System.out.println(arg);}
 					}
 				}
 		
